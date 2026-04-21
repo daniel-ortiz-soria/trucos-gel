@@ -90,10 +90,13 @@
             justify-content: center;
             width: 1rem; 
             height: 1rem;
-            color: #fb923c;
+            color: #ffffff;
             font-size: 1rem;
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(251, 146, 60, 0.8);
+            text-shadow: 
+                0 0 5px #ffffff,
+                0 0 15px #00d4ff, 
+                0 0 25px #00d4ff;
             
             /* Esta es la clave: el giro ocurre aquí, sobre su propio centro */
             animation: rotate-star 2s linear infinite;
@@ -108,7 +111,11 @@
             left: 50%;
             width: 100px; 
             height: 3px; /* Un poco más fino para elegancia */
-            background: linear-gradient(to left, rgba(251, 146, 60, 0.9), transparent);
+            background: linear-gradient(to left, 
+                #ffffff 0%, 
+                #00d4ff 30%, 
+                rgba(0, 212, 255, 0.4) 40%, 
+                transparent 60%);
             transform-origin: right center;
             /* ÁNGULO FIJO: 135deg es la diagonal perfecta para tu trayectoria */
             transform: translate(-100%, -40%) rotate(137deg); 
@@ -151,7 +158,8 @@
     </style>
 </head>
 <body>
-
+    <div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;"></div>
+    
     <!-- Sección 1: Logo a la izquierda y Presentación + Video a la derecha -->
     <header class="hero-section">
         <div class="container">
@@ -329,7 +337,7 @@
         }
 
         function startMeteorWave() {
-            const count = 5 + Math.floor(Math.random() * 2); // Generar 5 o 6 meteoritos
+            const count = 4 + Math.floor(Math.random() * 2); // Generar 5 o 6 meteoritos
             
             for (let i = 0; i < count; i++) {
                 // Espaciar la caída de cada meteorito dentro de la oleada
@@ -358,6 +366,68 @@
             if (logo) {
                 logo.addEventListener('mouseenter', triggerLogoMeteorShower);
             }
+        });
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { 
+                    "value": 80, // Cantidad de nodos
+                    "density": { "enable": true, "value_area": 800 } 
+                },
+                "color": { "value": "#fb923c" }, // Naranja Lafuente
+                "shape": { "type": "circle" },
+                "opacity": { 
+                    "value": 0.15, // Muy translúcido
+                    "random": false 
+                },
+                "size": { 
+                    "value": 3, 
+                    "random": true 
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 250,
+                    "color": "#fb923c",
+                    "opacity": 0.18, // Líneas casi invisibles para elegancia
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1.5, // Movimiento suave
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            },
+            "interactivity": {
+                "detect_on": "window",
+                "events": {
+                    "onhover": { 
+                        "enable": true, 
+                        "mode": ["grab", "repulse"]
+                    },
+                    "onclick": { "enable": false },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": { 
+                        "distance": 180, 
+                        "line_linked": { "opacity": 0.3 } // Se ilumina un poco al interactuar
+                    },
+                    "repulse": {
+                        "distance": 70,    /* Radio de alejamiento */
+                        "duration": 2.7     /* Velocidad de reacción */
+                    },
+                    "push": { "particles_nb": 4 }
+                }
+            },
+            "retina_detect": true
         });
     </script>
 </body>

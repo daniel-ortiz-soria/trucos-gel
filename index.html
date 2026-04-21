@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lafuente Grupo Empresarial - Trucos</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html {width: 100%;}
+        body {background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; width: 100%}
+        .hero-section { padding: 50px 0 60px 0; background: radial-gradient(circle at top right, #1e293b, #0f172a);}
+        .subtitle-presentation {color: #fb923c; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;}
+        /* Contenedor responsivo para mantener el ratio 16:9 */
+        .video-container { position: relative; padding-bottom: 56.25%;  height: 0; overflow: hidden; border-radius: 0; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); border: 0; background-color: #000;}
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%;}
+        .tricks-section {padding: 54px 0; background-color: #111827; }
+        .section-title {text-align: center; margin-bottom: 33px; font-weight: 800; color: #f8fafc;}
+        .section-title::after {content: ''; display: block; width: 60px; height: 4px; background: #fb923c; margin: 15px auto; border-radius: 2px;}
+        .video-card {background: #1e293b; border-radius: 10px; padding: 0px 0px 19px; height: 100%; transition: transform 0.3s ease; border: 1px solid #334155; overflow: hidden;}
+        .video-card:hover {transform: translateY(-5px); border-color: #fb923c;}
+        .video-card h5 {font-size: 1.4rem; margin-bottom: 15px; color: #e2e8f0; text-align: center;}
+        .desc {font-weight: 400; font-size: 14px; padding: 17px 11px 0 13px; margin-bottom: 0;}
+        footer {padding: 30px 0; border-top: 1px solid #334155; text-align: center; font-size: 0.9rem; color: #94a3b8;}
+
+        /* Animaciones del Logo */
+        @keyframes floatAndPulse {
+            0% { 
+                transform: translateY(0px); 
+                filter: drop-shadow(0 0 0px var(--logo-glow-color)); 
+            }
+            50% { 
+                transform: translateY(-15px); 
+                filter: drop-shadow(0 0 25px var(--logo-glow-color)); 
+            }
+            100% { 
+                transform: translateY(0px); 
+                filter: drop-shadow(0 0 0px var(--logo-glow-color)); 
+            }
+        }
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .logo-container img {
+            --logo-glow-color: rgba(148, 163, 183, 0.4);
+            animation: fadeInScale 1.2s ease-out forwards, floatAndPulse 5s ease-in-out infinite 1.2s;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        .logo-container img:hover {
+            --logo-glow-color: rgba(251, 146, 60, 0.85);
+            transform: scale(1.05) !important;
+        }
+        @media (max-width: 768px) {
+            .hero-section {padding: 40px 0;}
+            .logo-container {margin-bottom: 40px;}
+            .logo-container img {width: 90% !important; min-width: inherit !important;}
+        }
+
+        /* Estilos de Meteoritos con Estela */
+        #meteor-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        .meteor-wrapper {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            user-select: none;
+            opacity: 0;
+            z-index: 9999;
+        }
+        .meteor-core {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1rem; 
+            height: 1rem;
+            color: #fb923c;
+            font-size: 1rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(251, 146, 60, 0.8);
+            
+            /* Esta es la clave: el giro ocurre aquí, sobre su propio centro */
+            animation: rotate-star 2s linear infinite;
+        }
+        .meteor-core span {
+            display: block;
+            transform: translate(0, 0); /* Aseguramos que no tenga offsets */
+        }
+        .meteor-tail {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px; 
+            height: 3px; /* Un poco más fino para elegancia */
+            background: linear-gradient(to left, rgba(251, 146, 60, 0.9), transparent);
+            transform-origin: right center;
+            /* ÁNGULO FIJO: 135deg es la diagonal perfecta para tu trayectoria */
+            transform: translate(-100%, -40%) rotate(137deg); 
+            filter: blur(1.5px);
+            z-index: 1;
+            /* Animación más suave */
+            animation: none; /* Quitamos la vibración */
+        }
+        @keyframes rotate-star {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes tail-vibrate {
+            from { 
+                /* Solo escalamos el grosor (scaleY) y la opacidad */
+                transform: translate(-100%, -40%) rotate(137deg) scaleY(0.5); 
+                opacity: 0.6; 
+            }
+            to { 
+                transform: translate(-100%, -40%) rotate(137deg) scaleY(1.6); 
+                opacity: 1; 
+            }
+        }
+        @keyframes meteor-trajectory {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(-110vw, 110vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sección 1: Logo a la izquierda y Presentación + Video a la derecha -->
+    <header class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Columna 1: Logo Centrado -->
+                <div class="col-md-6 logo-container text-center">
+                    <img id="main-logo" src="logo2.png" alt="Lafuente Grupo Empresarial" class="img-fluid" style="min-width:520px; max-width: 520px;">
+                    <h4 class="mb-xl-5 pb-xl-5">&nbsp;&nbsp;TECNOLOGÍA DE LA INFORMACIÓN</h4>
+                </div>                
+                <!-- Columna 2: Subtítulo y Video de Presentación -->
+                <div class="col-md-6 text-center text-md-start">
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/POuAnBGajaw?si=o4bF5T7WvdHoXgdX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <h2 class="subtitle-presentation text-center mb-0 mt-4">Presentación</h2>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sección 2: VIDEOS DE TRUCOS (3 Columnas) -->
+    <section class="tricks-section px-lg-5">
+        <div class="container-fluid px-lg-5">
+            <h2 class="section-title">TABLERO DE TRUCOS</h2>
+            <div class="row g-4 g-lx-5">
+                <!-- Columna 1 -->
+                <div class="col-md-4 mb-3 mb-lg-0">
+                    <div class="video-card">
+                        
+                        <div class="video-container">
+                            <iframe 
+                                width="560" 
+                                height="315" 
+                                src="https://www.youtube.com/embed/qlVX7yAGyxo?si=6UhqTGMeVKFuMcNx" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <p class="desc">¿Sabías que puedes grabar rápidamente tu pantalla de Windows sin tener que buscar ni instalar ningún programa? Presionando las teclas:
+                        <br>&nbsp;&nbsp; - Windows + G</p>
+                    </div>
+                </div>
+                <!-- Columna 2 -->
+                <div class="col-md-4 mb-3 mb-lg-0">
+                    <div class="video-card">
+                        
+                        <div class="video-container">
+                            <iframe 
+                                width="560" 
+                                height="315" 
+                                src="https://www.youtube.com/embed/GCvL9XVer24?si=pTk1j02TaI80IyhK" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <p class="desc">Tienes muchas ventanas abiertas y necesitas ir a tu escritorio rápidamente. Presiona las teclas: 
+                            <br>&nbsp;&nbsp; - Windows + D &nbsp;&nbsp;&nbsp;(Minimizar ventanas)<br>&nbsp;&nbsp; - Windows + L &nbsp;&nbsp;&nbsp;(Cerrar Sesión rápido)</p>
+                    </div>
+                </div>
+                <!-- Columna 3 -->
+                <div class="col-md-4 mb-3 mb-lg-0">
+                    <div class="video-card">
+                        
+                        <div class="video-container">
+                            <iframe 
+                                width="560" 
+                                height="315" 
+                                src="https://www.youtube.com/embed/tMMAIC-7tcI?si=BNVoEUXLFGZJAEsL" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <p class="desc">¿Necesitas tomar una captura para señalar algún error o corrección de un documento? Toma una captura presionando las teclas: 
+                            <br>&nbsp;&nbsp; - Windows + Shift + S</p>
+                    </div>
+                </div>
+                <!-- Columna 4 -->
+                <div class="col-md-4 mb-3 mb-lg-0">
+                    <div class="video-card">
+                        <div class="video-container">
+                            <iframe 
+                                width="560" 
+                                height="315" 
+                                src="https://www.youtube.com/embed/Al7oHqgKdUY?si=Y68VIvfuDoAo-jM4" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <p class="desc">¿Tomaste apuntes a mano en tu cuaderno de alguna reunión o clase y necesitas digitalizarlos en Word? Ahora puedes transcribirlos con Gemini IA sin costo y rápidamente.</p>
+                    </div>
+                </div>
+                <!-- Columna 5 -->
+                <div class="col-md-4 mb-3 mb-lg-0">
+                    <div class="video-card">
+                        <div class="video-container">
+                            <iframe 
+                                width="560" 
+                                height="315" 
+                                src="https://www.youtube.com/embed/sQO-jAh9ssU?si=Y68VIvfuDoAo-jM4" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <p class="desc">¿Olvidaste generar un reporte o tablero (Dashboard) para tu reunión? Puedes generarlo rápidamente con Gemini IA sin costo, obteniendo una web rápida para tu presentación.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Lafuente Grupo Empresarial. Expertos en soluciones corporativas.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Efecto Meteoritos -->
+    <div id="meteor-container"></div>
+    <script>
+        function createMeteor() {
+            const container = document.getElementById('meteor-container');
+            if (!container) return;
+            
+            const wrapper = document.createElement('div');
+            wrapper.className = 'meteor-wrapper';
+            
+            const tail = document.createElement('div');
+            tail.className = 'meteor-tail';
+            
+            const core = document.createElement('div');
+            core.className = 'meteor-core';
+            // Envolvemos el '*' en un <span> para un giro perfecto
+            const innerStar = document.createElement('span');
+            innerStar.innerText = '*';
+            core.appendChild(innerStar);
+            
+            wrapper.appendChild(tail);
+            wrapper.appendChild(core);
+            
+            // Posición inicial aleatoria
+            const startX = Math.random() * (window.innerWidth + 500);
+            wrapper.style.left = startX + 'px';
+            wrapper.style.top = '-50px';
+            
+            // Variación de tamaño y velocidad
+            const duration = 2 + Math.random() * 3;
+            // Escalar el meteorito de forma aleatoria para más variedad
+            const scale = 0.5 + Math.random() * 1.5;
+            wrapper.style.fontSize = scale + 'rem';
+            wrapper.style.animation = `meteor-trajectory ${duration}s linear forwards`;
+            
+            container.appendChild(wrapper);
+            
+            // Eliminar después de la animación
+            setTimeout(() => {
+                wrapper.remove();
+            }, duration * 1000);
+        }
+
+        function startMeteorWave() {
+            const count = 5 + Math.floor(Math.random() * 2); // Generar 5 o 6 meteoritos
+            
+            for (let i = 0; i < count; i++) {
+                // Espaciar la caída de cada meteorito dentro de la oleada
+                setTimeout(createMeteor, Math.random() * 3000);
+            }
+            
+            // Programar la siguiente oleada (cada 15-30 segundos)
+            const nextWave = 15000 + Math.random() * 15000;
+            setTimeout(startMeteorWave, nextWave);
+        }
+        
+        // Función específica para lanzar ráfaga desde el logo
+        function triggerLogoMeteorShower() {
+            const count = 4 + Math.floor(Math.random() * 3);
+            for (let i = 0; i < count; i++) {
+                setTimeout(createMeteor, Math.random() * 1500);
+            }
+        }
+
+        // Iniciar la primera oleada después de 3 segundos
+        setTimeout(startMeteorWave, 3000);
+
+        // Event listener para el logo
+        document.addEventListener('DOMContentLoaded', () => {
+            const logo = document.getElementById('main-logo');
+            if (logo) {
+                logo.addEventListener('mouseenter', triggerLogoMeteorShower);
+            }
+        });
+    </script>
+</body>
+</html>
